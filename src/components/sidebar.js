@@ -1,4 +1,4 @@
-function Sidebar(showHome, showToday, showThisWeek, showFinished, showCancelled){
+function Sidebar(showHome, showToday, showThisWeek, showFinished){
     let sidebar = document.createElement('div');
     sidebar.id = "sidebar";
 
@@ -15,9 +15,9 @@ function Sidebar(showHome, showToday, showThisWeek, showFinished, showCancelled)
         });
         options.append(item);
     }
-    //Projects
+    //Tasks
     const projectsTitle = document.createElement('h2');
-    projectsTitle.innerText = "Projects";
+    projectsTitle.innerText = "Other";
     projectsTitle.classList.add("sidebar-title");
     options.appendChild(projectsTitle);
 
@@ -25,7 +25,7 @@ function Sidebar(showHome, showToday, showThisWeek, showFinished, showCancelled)
     projectOptions.id = "project-list";
     const addProjectOption = document.createElement('li');
     addProjectOption.classList.add('sidebar-option', 'project-option');
-    addProjectOption.innerText = "+ Project";
+    addProjectOption.innerText = "+ Tasks";
     addProjectOption.id = "btn-add-project";
     addProjectOption.addEventListener('click', () => openProjectModal());
     options.appendChild(projectOptions);
@@ -36,31 +36,11 @@ function Sidebar(showHome, showToday, showThisWeek, showFinished, showCancelled)
     finishedList.innerText = "Finished Tasks";
     finishedList.id = "finished-list";
     finishedList.addEventListener('click' , () => {
-        console.log(`clicked ${finishedList.id}`);
+        showFinished();
     });
-    projectOptions.appendChild(finishedList);
-    //Cancelled List 
-    const cancelledList = document.createElement('li');
-    cancelledList.classList.add('sidebar-option', 'project-option');
-    cancelledList.innerHTML = "Cancelled Tasks";
-    cancelledList.id = "cancelled-list";
-    cancelledList.addEventListener('click', () => {
-        console.log(`clicked ${cancelledList.id}`);
-    });
-    projectOptions.appendChild(cancelledList);
-
+    options.appendChild(finishedList);
     sidebar.append(options);
     return sidebar;
-}
-
-function addProject(project){
-    //Open modal to add project
-    const projectList = document.getElementById('project-list');
-    const newProject = document.createElement('li');
-    newProject.innerText = "test-project";
-    newProject.classList.add('sidebar-option', 'project-option');
-    projectList.appendChild(newProject);
-    newProject.classList.add('sidebar-option');
 }
 
 function openProjectModal(){

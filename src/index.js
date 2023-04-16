@@ -6,7 +6,6 @@ import $ from 'jquery';
 import Header from './components/header';
 import { MainSection } from './components/main-section';
 import { TodoList } from './components/todo-list';
-import { TodayList } from './components/today-list';
 import Footer from './components/footer';
 import ItemComponent from "./components/item";
 import TodoItem from "./app/todo-item";
@@ -19,9 +18,13 @@ import '@fortawesome/fontawesome-free/js/brands'
 
 
 let id = 0;
-const itemList = [new TodoItem("test1", "2023-04-13", id++), new TodoItem("test2", "2023-04-15", id++), new TodoItem("test3", "2023-04-14", id++)];
+const itemList = [new TodoItem("test1", "2023-04-13", id++),
+new TodoItem("test2", "2023-04-15", id++),
+new TodoItem("test3", "2023-04-14", id++),
+new TodoItem("test4", "2023-04-16", id++)
+];
+
 const finishedList = [];
-const cancelledList = [];
 let currentView = "Home";
 
 /*
@@ -32,7 +35,7 @@ function displayPage() {
     const box = document.createElement('div');
     box.id = "box";
     const header = Header();
-    const mainSection = MainSection(showHome, showToday, showThisWeek, showFinished, showCancelled);
+    const mainSection = MainSection(showHome, showToday, showThisWeek, showFinished);
     const footer = Footer();
     box.appendChild(header);
     box.appendChild(mainSection);
@@ -80,7 +83,10 @@ function refreshCurrentView() {
         showToday();
     }
     else if (currentView == "Week") {
-
+        showThisWeek();
+    }
+    else if(currentView == "Finished"){
+        showFinished();
     }
     else {
         showHome();
@@ -110,13 +116,12 @@ function showHome() {
     page.appendChild(createPageTitle("Home"));
     page.appendChild(list);
     currentView = "Home";
-
     refreshItemList(itemList, removeTodoItem);
 }
 
 function showToday() {
     const page = clearPage();
-    const list = TodayList(itemList);
+    const list = TodoList(itemList);
     page.appendChild(createPageTitle("Today's Tasks"));
     page.appendChild(list);
     currentView = "Today";
@@ -125,17 +130,21 @@ function showToday() {
 
 function showThisWeek() {
     const page = clearPage();
+    const list = TodoList(itemList);
+    page.appendChild(createPageTitle("This Weeks Tasks"));
+    page.appendChild(list);
     currentView = "Week";
+    refreshThisWeekList(itemList, removeTodoItem);
 }
 
 function showFinished() {
     const page = clearPage();
+    const list = TodoList(finishedList);
+    page.appendChild(createPageTitle("Finished Tasks"));
+    page.appendChild(list);
+    currentView = "Finished";
+    refreshItemList(finishedList, removeTodoItem);
 }
-
-function showCancelled() {
-    const page = clearPage();
-}
-
 
 function refreshItemList(itemList, removeTodoItem) {
     const div = document.getElementById("todo-list");
@@ -148,12 +157,27 @@ function refreshItemList(itemList, removeTodoItem) {
 }
 
 function refreshTodayList(itemList, removeTodoItem) {
-    const div = document.getElementById("today-list");
+    const div = document.getElementById("todo-list");
     if (!div) return;
     div.innerHTML = "";
     itemList.filter((item) => {
         const dateParse = new Date(Date.parse(item.date));
+        console.log(dateParse.getDay());
         if (dateParse.getDay() == new Date().getDay()) return item;
+    })
+        .map((element) => {
+            const newItem = ItemComponent(element.item, element.date, element.id, removeTodoItem, removeTodoItem);
+            div.appendChild(newItem);
+        });
+}
+
+function refreshThisWeekList(itemList, removeTodoItem) {
+    const div = document.getElementById("todo-list");
+    if (!div) return;
+    div.innerHTML = "";
+    itemList.filter((item) => {
+        const dateParse = new Date(Date.parse(item.date));
+        if (dateParse.getDate() >= new Date().getDate() && dateParse.getDate() <= new Date().getDate() + 7) return item;
     })
         .map((element) => {
             const newItem = ItemComponent(element.item, element.date, element.id, removeTodoItem, removeTodoItem);

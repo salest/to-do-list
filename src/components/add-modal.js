@@ -29,11 +29,8 @@ function AddModal(addTodoItem, id) {
     const modalSumbit = document.createElement('input');
     modalSumbit.type = "submit";
     modalSumbit.value = "Create Item";
-    const modalClose = document.createElement('span');
-    modalClose.innerHTML = "&times;";
-    modalClose.classList.add("close");
     modalOptions.appendChild(modalSumbit);
-    modalOptions.appendChild(modalClose);
+
 
     modalForm.appendChild(textLabel);
     modalForm.appendChild(textInput);

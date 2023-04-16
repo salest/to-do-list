@@ -28,21 +28,10 @@ function ItemComponent(text, date, id, finishFunction, deleteFunction){
     finishButton.title = "finishButton";
     finishButton.id = id + "-finish";
     finishButton.addEventListener('click', () => {
-        finishFunction(id);
+        finishFunction(id, "finish");
     });
 
-    const deleteButton = document.createElement('button');
-    const deleteMark = document.createElement('i');
-    deleteMark.classList.add('fa-solid', 'fa-trash', 'todo-button');
-    deleteButton.appendChild(deleteMark);
-    deleteButton.type = "button";
-    deleteButton.title = "delete-button";
-    deleteButton.id = id + "-delete";
-    deleteButton.addEventListener('click', () => {
-        deleteFunction(id);
-    });
     buttons.appendChild(finishButton);
-    buttons.appendChild(deleteButton);
 
     div.appendChild(infoDiv);
     div.appendChild(buttons);

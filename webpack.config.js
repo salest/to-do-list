@@ -23,6 +23,8 @@ module.exports = {
         filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'dist'),
         clean: true,
+        // Tweak this to match your GitHub project name
+        publicPath: "/to-do-list/",
     },
     optimization: {
         runtimeChunk: 'single',
